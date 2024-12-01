@@ -1,3 +1,4 @@
+import Categories from "@/components/Categories";
 import Items from "@/components/Items";
 import Navbar from "@/components/Navbar";
 import Searchbar from "@/components/Searchbar";
@@ -6,7 +7,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="relative flex flex-col items-center justify-center">
-      <div className="absolute inset-0 -z-10 h-screen opacity-90">
+      <div className="absolute inset-0 -z-10 h-screen opacity-85">
         <Image
           className=""
           src="/BackGround-image.jpg" // Replace with your image path
@@ -19,6 +20,7 @@ export default function Home() {
       </div>
       <Navbar />
       <Searchbar />
+      <Categories />
       <Items />
     </div>
   );

@@ -1,30 +1,23 @@
 import React from "react";
 
 export default function Items() {
-  const firstRow = ["قهوه گرم و سرد", "دمی بار", "نوشیدنی های گرم", "نوشیدنی های سرد"];
-  const secondRow = ["شیک", "فصلی", "تاپینگ"];
-
-  const renderItems = (items) => {
-    return items.map((item, index) => (
-      <div
-        key={index}
-        className="flex items-center justify-center py-2 border w-20 h-14 text-center rounded-md px-1 select-none
-        bg-black bg-opacity-20 cursor-pointer transition
-        hover:bg-opacity-80 hover:border-accent
-        "
-      >
-        {item}
-      </div>
-    ));
-  };
-
   return (
-    <div className="mt-7">
-      <div className="flex items-center justify-center gap-2 text-white text-sm">
-        {renderItems(firstRow)}
+    <div className="mt-7 w-full">
+      <div className="relative w-full flex justify-center items-center">
+        <span className="absolute w-full border-t-4 border-dotted border-black left-3/4"></span>
+        <h2 className="text-white w-fit bg-black bg-opacity-70 py-1 px-2 rounded-xl">
+          نوشیدنی های سرد
+        </h2>
+        <span className="absolute w-full border-t-4 border-dotted border-black right-3/4"></span>
       </div>
-      <div className="flex items-center justify-center gap-2 mt-7 text-white text-sm">
-        {renderItems(secondRow)}
+      <div className="flex items-center justify-center mt-7 text-white">
+        <div className="flex flex-col justify-start items-center h-60 bg-black bg-opacity-30">
+          <div className="relative">
+            <h3 className="py-2 px-3">سودا خیار لیمو</h3>
+            <span className=" absolute border-2 rounded-lg h-2/4 left-2/4"></span>
+          </div>
+          <div>80</div>
+        </div>
       </div>
     </div>
   );
