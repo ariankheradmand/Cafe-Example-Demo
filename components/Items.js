@@ -3,7 +3,7 @@ import React from "react";
 export default function Items() {
   return (
     <div className="mt-7 w-full">
-      <div className="relative w-full flex justify-center items-center">
+      <div className="relative w-full flex justify-center items-center overflow-hidden">
         <span className="absolute w-full border-t-4 border-dotted border-black left-3/4"></span>
         <h2 className="text-white w-fit bg-black bg-opacity-70 py-1 px-2 rounded-xl">
           نوشیدنی های سرد

@@ -10,9 +10,9 @@ export default function Navbar() {
     justify-center
     w-full
     h-20
-    bg-accent
+    
      bg-opacity-70
-     backdrop-blur-sm
+    
     "
     >
       <nav className="

@@ -8,3 +8,6 @@
 body {
   font-family: 'Vazirmatn', sans-serif;
 }
+.backdrop-blur-sm {
+  --tw-backdrop-blur: blur(3px);
+}
