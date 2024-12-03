@@ -11,3 +11,6 @@ body {
 .backdrop-blur-sm {
   --tw-backdrop-blur: blur(3px);
 }
+.min-w-26 {
+  width: 106px;
+}

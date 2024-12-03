@@ -10,7 +10,7 @@ export default function Home() {
       <div className="absolute inset-0 -z-10 h-screen opacity-85 ">
         <Image
           className="backdrop-blur-sm"
-          src="/Bg-grad.svg" // Replace with your image path
+          src="/bg-grad.svg" // Replace with your image path
           alt="Background"
           layout="fill" // Makes the image cover the entire div
           objectFit="cover" // Ensures the image covers the area without distortion
