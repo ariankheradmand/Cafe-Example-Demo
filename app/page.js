@@ -3,6 +3,7 @@ import Categories from "@/components/Categories";
 import Items from "@/components/Items";
 import Navbar from "@/components/Navbar";
 import Searchbar from "@/components/Searchbar";
+import { MdOutlineKeyboardDoubleArrowUp } from "react-icons/md";
 import { useState } from "react"; // برای استفاده از useState
 
 export default function Home() {
@@ -55,7 +56,7 @@ export default function Home() {
           onClick={scrollToTop}
           className="fixed bottom-10 right-10 bg-accent opacity-85 text-white py-4 px-3 rounded-full shadow-lg hover:bg-accent hover:opacity-100 transition duration-200"
         >
-          ↑
+          <MdOutlineKeyboardDoubleArrowUp />
         </button>
     </div>
   );
