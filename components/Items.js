@@ -1,5 +1,6 @@
 import React from "react";
 import { productData } from "@/libs/data";
+import Image from "next/image";
 
 const firstRow = [
   "قهوه گرم و سرد",
@@ -49,20 +50,34 @@ export default function Items({ searchQuery }) {
                       {item.name}
                     </h3>
                   </div>
+
                   {item.secondaryPrice === undefined ? (
                     <>
-                      <span className="absolute border rounded-lg h-12 left-2/4 top-20"></span>
+                      {item.price !== undefined ? (
+                        <>
+                          <Image alt="arrow" src="/arrow.svg" width={32} height={32} className="absolute rounded-lg h-16  top-20"></Image>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                       <div className="absolute bottom-0 text-sm">
                         {item.price}
                       </div>
                     </>
                   ) : (
                     <>
+                      {item.price !== undefined ? (
+                        <>
+                          <Image alt="arrow" src="/arrow.svg" width={24} height={24} className="absolute  rounded-lg h-16  top-14"></Image>
+
+                        </>
+                      ) : (
+                        <></>
+                      )}
                       <div className="absolute flex flex-col gap-2 text-center bottom-0 left-1 text-sm">
                         <span>ترکیبی</span>
                         <span>{item.price}</span>
                       </div>
-                      <span className="absolute border rounded-lg h-12 left-2/4 top-20"></span>
                       <div className="absolute flex gap-2 flex-col text-center bottom-0 right-1 text-sm">
                         <span>عربیکا</span>
                         <span>{item.secondaryPrice}</span>

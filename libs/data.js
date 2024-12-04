@@ -216,7 +216,7 @@ export const productData = [
   },
   {
     id: 35,
-    name: "نوشیدنی گرم | سانفیل",
+    name: "نوشیدنی گرم سانفیل",
     price: "107",
     tag: "فصلی",
   },
