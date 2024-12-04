@@ -15,18 +15,26 @@ export default function Navbar() {
     
     "
     >
-      <nav className="
+      <nav
+        className="
       flex
       iteme-center
       justify-center
       w-11/12
       bg-accent 
       relative
-      ">
-        <Image className="
+      "
+      >
+        <Image
+          className="
         absolute
         -top-5
-        " alt={"Novo Logo"} width={180} height={180} src={"/Logo.png"} ></Image>
+        "
+          alt={"Novo Logo"}
+          width={180}
+          height={180}
+          src={"/Logo.png"}
+        ></Image>
       </nav>
     </div>
   );
