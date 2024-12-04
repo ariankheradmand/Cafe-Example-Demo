@@ -4,6 +4,8 @@ import Items from "@/components/Items";
 import Navbar from "@/components/Navbar";
 import Searchbar from "@/components/Searchbar";
 import { MdOutlineKeyboardDoubleArrowUp } from "react-icons/md";
+import { CiLocationOn } from "react-icons/ci";
+
 import { useState } from "react"; // برای استفاده از useState
 
 export default function Home() {
@@ -58,6 +60,15 @@ export default function Home() {
         >
           <MdOutlineKeyboardDoubleArrowUp />
         </button>
+
+        <a
+        href="https://www.google.com/maps/place/Novo+Café/@34.3656513,47.1174416,12z/data=!4m6!3m5!1s0x3ffaed1567446db3:0xa488808a94044f4b!8m2!3d34.3433642!4d47.0737136!16s%2Fg%2F11rj_xk_q_?entry=ttu&g_ep=EgoyMDI0MTIwMi4wIKXMDSoASAFQAw%3D%3D" // لینک لوکیشن گوگل مپ
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="fixed flex items-center top-1 left-1 bg-accent bg-opacity-40 backdrop-blur-md  z-30 text-white py-1 px-2 rounded-md shadow-lg hover:scale-105 transition duration-200"
+      >
+        <CiLocationOn className="text-black mr-1" size={25}/> <span className="text-sm "> نشانی ما</span>
+      </a>
     </div>
   );
 }
