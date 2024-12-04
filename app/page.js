@@ -18,6 +18,13 @@ export default function Home() {
     setSearchQuery(query); // مقدار جستجو را به روز رسانی می‌کنیم
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // اسکرول به صورت نرم
+    });
+  };
+
   // تابع برای ریست کردن جستجو و برگشت به حالت اول
   const resetSearch = () => {
     setSearchQuery(""); // جستجو را پاک می‌کنیم
@@ -44,7 +51,12 @@ export default function Home() {
       <Categories />
       <Items searchQuery={searchQuery} handleNoResults={handleNoResults} />
       
-      
+      <button
+          onClick={scrollToTop}
+          className="fixed bottom-10 right-10 bg-accent opacity-85 text-white py-4 px-3 rounded-full shadow-lg hover:bg-accent hover:opacity-100 transition duration-200"
+        >
+          ↑
+        </button>
     </div>
   );
 }
