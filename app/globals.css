@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -11,7 +11,8 @@
 }
 
 @keyframes customPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -25,9 +26,24 @@
   animation: customPulse 1.5s infinite;
 }
 
+/* Default shadow for the button */
+.shadow-custom {
+  -webkit-box-shadow: 10px 10px 12px -6px rgba(0, 0, 0, 0.83);
+  -moz-box-shadow: 10px 10px 12px -6px rgba(0, 0, 0, 0.83);
+  box-shadow: 10px 10px 12px -6px rgba(0, 0, 0, 0.83);
+  transition: all 0.2s ease-in-out; /* Smooth transition for the click effect */
+}
+
+/* Pressed state when the button is clicked */
+.shadow-custom:active  {
+  -webkit-box-shadow: inset 13px 12px 12px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: inset 13px 12px 12px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: inset 13px 12px 12px 0px rgba(0, 0, 0, 0.75);
+  transform: translateY(2px); /* Simulates a pressing motion */
+}
 
 body {
-  font-family: 'Vazirmatn', sans-serif;
+  font-family: "Vazirmatn", sans-serif;
 }
 .backdrop-blur-sm {
   --tw-backdrop-blur: blur(3px);

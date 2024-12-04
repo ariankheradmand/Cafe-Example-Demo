@@ -9,9 +9,9 @@ export default function Items() {
     return items.map((item, index) => (
       <Link key={index} href={`#${item}`} passHref>
         <div
-          className="flex items-center justify-center py-2 border w-20 h-14 text-center rounded-md px-1 select-none
-          bg-black bg-opacity-50 cursor-pointer transition
-          hover:bg-opacity-80 hover:border-accent"
+          className="flex items-center justify-center shadow-custom py-2 border w-20 h-14 text-center rounded-md px-1 select-none
+          bg-black bg-opacity-80 cursor-pointer transition
+          hover:bg-opacity-100 hover:border-accent"
         >
           {item}
         </div>
