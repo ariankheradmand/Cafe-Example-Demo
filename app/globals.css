@@ -10,6 +10,22 @@
   }
 }
 
+@keyframes customPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.animate-custom-pulse {
+  animation: customPulse 1.5s infinite;
+}
+
+
 body {
   font-family: 'Vazirmatn', sans-serif;
 }
