@@ -2,7 +2,7 @@
 export const productData = [
   {
     id: 1,
-    name: "اسپرسو ترکیبی",
+    name: "اسپرسو",
     price: "71",
     secondaryPrice: "87",
     tag: "قهوه گرم و سرد",

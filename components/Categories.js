@@ -13,9 +13,6 @@ export default function Items() {
     {id : 7, name: "تاپینگ", imagepath: "/topping.svg" },
 
   ];
-  const secondRow = [
-    
-  ];
 
   const renderItems = (items) => {
     return items.map((item) => (

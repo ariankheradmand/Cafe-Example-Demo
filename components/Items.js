@@ -1,19 +1,31 @@
 import React from "react";
 import { productData } from "@/libs/data";
 
-const firstRow = ["قهوه گرم و سرد", "دمی بار", "نوشیدنی های گرم", "نوشیدنی های سرد", "شیک", "فصلی", "تاپینگ"];
+const firstRow = [
+  "قهوه گرم و سرد",
+  "دمی بار",
+  "نوشیدنی های گرم",
+  "نوشیدنی های سرد",
+  "شیک",
+  "فصلی",
+  "تاپینگ",
+];
 
 export default function Items({ searchQuery }) {
   // فیلتر کردن آیتم‌ها براساس جستجو
   const filteredItems = productData.filter((item) =>
-    searchQuery === "" ? true : item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    searchQuery === ""
+      ? true
+      : item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="flex flex-col items-center mt-7 w-full relative">
       {firstRow.map((category, categoryIndex) => {
         // فیلتر کردن آیتم‌ها بر اساس دسته‌بندی
-        const itemsInCategory = filteredItems.filter((item) => item.tag === category);
+        const itemsInCategory = filteredItems.filter(
+          (item) => item.tag === category
+        );
 
         // اگر تعداد آیتم‌ها صفر بود، دسته‌بندی را نمایش ندهیم
         if (itemsInCategory.length === 0) return null;
@@ -32,11 +44,31 @@ export default function Items({ searchQuery }) {
                   key={item.id}
                   className="flex flex-col justify-start items-center border h-40 min-w-26 bg-black bg-opacity-40 rounded-md relative"
                 >
-                  <span className="absolute border rounded-lg h-12 left-2/4 top-20"></span>
-                  <div className="">
-                    <h3 className="py-2 px-3 text-sm font-bold text-center">{item.name}</h3>
+                  <div>
+                    <h3 className="py-2 px-3 text-sm font-bold text-center">
+                      {item.name}
+                    </h3>
                   </div>
-                  <div className="absolute bottom-0 text-sm">{item.price}</div>
+                  {item.secondaryPrice === undefined ? (
+                    <>
+                      <span className="absolute border rounded-lg h-12 left-2/4 top-20"></span>
+                      <div className="absolute bottom-0 text-sm">
+                        {item.price}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="absolute flex flex-col gap-2 text-center bottom-0 left-1 text-sm">
+                        <span>ترکیبی</span>
+                        <span>{item.price}</span>
+                      </div>
+                      <span className="absolute border rounded-lg h-12 left-2/4 top-20"></span>
+                      <div className="absolute flex gap-2 flex-col text-center bottom-0 right-1 text-sm">
+                        <span>عربیکا</span>
+                        <span>{item.secondaryPrice}</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               ))}
             </div>
