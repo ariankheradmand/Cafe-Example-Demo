@@ -226,7 +226,7 @@ export const productData = [
     id: 36,
     name: "سیروپ",
     tag: "تاپینگ",
-    imagePath: "syrup.svg",
+    imagePath: "Syrup.svg",
   },
   {
     id: 37,
