@@ -59,7 +59,7 @@ export default function Home() {
       <Searchbar onSearch={handleSearch} />
       <button
         onClick={resetSearch}
-        className="fixed z-20 top-1 bg-accent text-black right-1 py-2 px-4 rounded-md transition-all hover:scale-105"
+        className="fixed z-20 top-1 bg-accent text-black right-1 py-2 px-4 rounded-md transition-all active:bg-accent active:bg-opacity-40 active:backdrop-blur-md"
       >
         بازنشانی
       </button>

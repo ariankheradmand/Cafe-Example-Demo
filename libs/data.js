@@ -6,6 +6,8 @@ export const productData = [
     price: "71",
     secondaryPrice: "87",
     tag: "قهوه گرم و سرد",
+    imagePath: "espresso.jpg",
+    detail:"اسپرسو، عصاره‌ای غلیظ و معطر از دانه‌های قهوه است که پایه‌ی بسیاری از نوشیدنی‌های قهوه‌ای است و با طعمی قوی و انرژی‌بخش برای عاشقان قهوه مناسب است."
   },
   {
     id: 2,
@@ -224,15 +226,18 @@ export const productData = [
     id: 36,
     name: "سیروپ",
     tag: "تاپینگ",
+    imagePath: "syrup.svg",
   },
   {
     id: 37,
     name: "خامه",
     tag: "تاپینگ",
+    imagePath: "Cream.svg",
   },
   {
     id: 38,
     name: "شیرگیاهی",
     tag: "تاپینگ",
+    imagePath: "VeganMilk.svg"
   },
 ];

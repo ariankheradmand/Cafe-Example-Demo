@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { productData } from "@/libs/data";
 import Image from "next/image";
 
@@ -13,6 +13,8 @@ const firstRow = [
 ];
 
 export default function Items({ searchQuery }) {
+  const [selectedItem, setSelectedItem] = useState(null);
+
   // فیلتر کردن آیتم‌ها براساس جستجو
   const filteredItems = productData.filter((item) =>
     searchQuery === ""
@@ -22,6 +24,35 @@ export default function Items({ searchQuery }) {
 
   return (
     <div className="flex flex-col items-center mt-7 w-full relative">
+      {selectedItem && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+          <div className="relative bg-white bg-opacity-85 rounded-md p-5 w-96">
+            <button
+              className="absolute top-2 right-4 text-black font-bold text-3xl"
+              onClick={() => setSelectedItem(null)}
+            >
+              &times;
+            </button>
+            <h3 className="text-center mb-4 text-2xl font-bold">
+              {selectedItem.name}
+            </h3>
+            <div className="flex justify-center items-center">
+              <Image
+                alt={selectedItem.name}
+                src={`/Items/${selectedItem.imagePath}`}
+                width={250}
+                height={150}
+                className="rounded-md"
+              />
+            </div>
+            <div className="flex bg-white p-4 w-100 mt-4 justify-end">
+            <h4 dir="rtl" className="text-center "> <span className="font-bold rtl ">نحوه فراهم سازی:</span> {selectedItem.detail}</h4>
+
+            </div>
+            
+          </div>
+        </div>
+      )}
       {firstRow.map((category, categoryIndex) => {
         // فیلتر کردن آیتم‌ها بر اساس دسته‌بندی
         const itemsInCategory = filteredItems.filter(
@@ -43,7 +74,8 @@ export default function Items({ searchQuery }) {
               {itemsInCategory.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-col justify-start items-center border h-40 min-w-26 bg-black bg-opacity-40 rounded-md relative"
+                  className="flex flex-col justify-start items-center transition-all border h-40 min-w-26 bg-black bg-opacity-40 rounded-md hover:border-accent hover:text-accent relative"
+                  onClick={() => setSelectedItem(item)} // Click handler to show popup
                 >
                   <div>
                     <h3 className="py-2 px-3 text-sm font-bold text-center">
@@ -55,10 +87,24 @@ export default function Items({ searchQuery }) {
                     <>
                       {item.price !== undefined ? (
                         <>
-                          <Image alt="arrow" src="/arrow.svg" width={32} height={32} className="absolute rounded-lg h-16  top-20"></Image>
+                          <Image
+                            alt="arrow"
+                            src="/arrow.svg"
+                            width={32}
+                            height={32}
+                            className="absolute rounded-lg h-16  top-20"
+                          ></Image>
                         </>
                       ) : (
-                        <></>
+                        <>
+                          <Image
+                            alt="arrow"
+                            src={`/Topping/${item.imagePath}`}
+                            width={50}
+                            height={32}
+                            className="absolute rounded-lg h-16  top-16"
+                          ></Image>
+                        </>
                       )}
                       <div className="absolute bottom-0 text-sm">
                         {item.price}
@@ -68,8 +114,13 @@ export default function Items({ searchQuery }) {
                     <>
                       {item.price !== undefined ? (
                         <>
-                          <Image alt="arrow" src="/arrow.svg" width={24} height={24} className="absolute  rounded-lg h-16  top-14"></Image>
-
+                          <Image
+                            alt="arrow"
+                            src="/arrow.svg"
+                            width={24}
+                            height={24}
+                            className="absolute  rounded-lg h-16  top-14"
+                          ></Image>
                         </>
                       ) : (
                         <></>

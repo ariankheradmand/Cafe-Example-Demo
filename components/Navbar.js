@@ -33,7 +33,7 @@ export default function Navbar() {
           alt={"Novo Logo"}
           width={180}
           height={180}
-          src={"/Logo.png"}
+          src={"/Logo.svg"}
         ></Image>
       </nav>
     </div>
