@@ -25,8 +25,14 @@ export default function Items({ searchQuery }) {
   return (
     <div className="flex flex-col items-center mt-7 w-full relative">
       {selectedItem && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-          <div className="relative bg-white bg-opacity-85 rounded-md p-5 w-96">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
+          onClick={() => setSelectedItem(null)} // Close popup on background click
+        >
+          <div
+            className="relative bg-white bg-opacity-85 rounded-md p-5 w-96"
+            onClick={(e) => e.stopPropagation()} // Prevent background click when clicking on content
+          >
             <button
               className="absolute top-2 right-4 text-black font-bold text-3xl"
               onClick={() => setSelectedItem(null)}
@@ -46,13 +52,15 @@ export default function Items({ searchQuery }) {
               />
             </div>
             <div className="flex bg-white p-4 w-100 mt-4 justify-end">
-            <h4 dir="rtl" className="text-center "> <span className="font-bold rtl ">نحوه فراهم سازی:</span> {selectedItem.detail}</h4>
-
+              <h4 dir="rtl" className="text-center">
+                <span className="font-bold rtl">نحوه فراهم سازی:</span>{" "}
+                {selectedItem.detail}
+              </h4>
             </div>
-            
           </div>
         </div>
       )}
+
       {firstRow.map((category, categoryIndex) => {
         // فیلتر کردن آیتم‌ها بر اساس دسته‌بندی
         const itemsInCategory = filteredItems.filter(

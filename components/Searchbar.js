@@ -20,6 +20,7 @@ export default function Searchbar({ onSearch }) {
     if (searchQuery.trim() === "") return; // اگر جستجو خالی بود، کاری نکنیم
 
     onSearch(searchQuery); // ارسال جستجو به والد
+    setSearchQuery("");
   };
 
   const handleNoResults = (found) => {
@@ -35,6 +36,7 @@ export default function Searchbar({ onSearch }) {
           dir={dir}
           placeholder="دنبال چی میگردی؟"
           onChange={handleInputChange}
+          value={searchQuery}
           className="placeholder-white text-sm text-white text-bold backdrop-blur-md bg-white bg-opacity-30 rounded-md w-full outline-none py-2 pr-3 pl-20 transition-all
           focus:ring-0 focus:bg-opacity-90 focus:text-black focus:placeholder:text-black"
         />

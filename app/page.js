@@ -3,6 +3,7 @@ import Categories from "@/components/Categories";
 import Items from "@/components/Items";
 import Navbar from "@/components/Navbar";
 import Searchbar from "@/components/Searchbar";
+import Footer from "@/components/Footer" 
 import { MdOutlineKeyboardDoubleArrowUp } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
 
@@ -74,7 +75,7 @@ export default function Home() {
       {showScrollToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-10 right-10 bg-accent text-white py-4 px-3 rounded-full shadow-lg transition duration-200 animate-custom-pulse"
+          className="fixed z-50 bottom-5 right-5 bg-accent text-white py-4 px-3 rounded-full shadow-lg transition duration-200 animate-custom-pulse"
         >
           <MdOutlineKeyboardDoubleArrowUp />
         </button>
@@ -88,6 +89,7 @@ export default function Home() {
       >
         <CiLocationOn className="text-black mr-1" size={25} /> <span className="text-sm"> نشانی ما</span>
       </a>
-    </div>
+      <Footer></Footer>
+      </div>
   );
 }
