@@ -3,54 +3,58 @@ import Categories from "@/components/Categories";
 import Items from "@/components/Items";
 import Navbar from "@/components/Navbar";
 import Searchbar from "@/components/Searchbar";
-import Footer from "@/components/Footer" 
+import Footer from "@/components/Footer";
+import LoadingScreen from "@/components/Loading";
 import { MdOutlineKeyboardDoubleArrowUp } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
-
-import { useState, useEffect } from "react"; // اضافه کردن useEffect
+import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState(""); // برای ذخیره جستجو
-  const [noResults, setNoResults] = useState(false); // برای مدیریت پیام "محصولی پیدا نشد"
-  const [showScrollToTop, setShowScrollToTop] = useState(false); // کنترل نمایش دکمه بالا رفتن
+  const [searchQuery, setSearchQuery] = useState("");
+  const [noResults, setNoResults] = useState(false);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // تابعی که بررسی می‌کند آیا چیزی پیدا شده است یا خیر
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 2000); // زمان لودینگ
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollToTop(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const handleNoResults = (found) => {
-    setNoResults(!found); // اگر چیزی پیدا نشد، پیام را نمایش می‌دهیم
+    setNoResults(!found);
   };
 
   const handleSearch = (query) => {
-    setSearchQuery(query); // مقدار جستجو را به روز رسانی می‌کنیم
+    setSearchQuery(query);
   };
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // اسکرول به صورت نرم
+      behavior: "smooth",
     });
   };
 
-  // تابع برای ریست کردن جستجو و برگشت به حالت اول
   const resetSearch = () => {
-    setSearchQuery(""); // جستجو را پاک می‌کنیم
-    setNoResults(false); // پیام "محصولی پیدا نشد" را حذف می‌کنیم
+    setSearchQuery("");
+    setNoResults(false);
   };
 
-  // مدیریت نمایش دکمه بالا رفتن
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowScrollToTop(true); // اگر کاربر بیشتر از 300px اسکرول کرد، دکمه نمایش داده شود
-      } else {
-        setShowScrollToTop(false); // در غیر این صورت دکمه مخفی شود
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll); // اضافه کردن رویداد اسکرول
-    return () => {
-      window.removeEventListener("scroll", handleScroll); // پاک کردن رویداد در زمان خروج
-    };
-  }, []);
+  // نمایش لودینگ
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="relative flex flex-col items-center justify-center bg-[url('/Bg-grad.svg')] bg-no-repeat bg-cover bg-fixed bg-center min-h-screen">
@@ -82,14 +86,14 @@ export default function Home() {
       )}
 
       <a
-        href="https://www.google.com/maps/place/Novo+Café/@34.3656513,47.1174416,12z/data=!4m6!3m5!1s0x3ffaed1567446db3:0xa488808a94044f4b!8m2!3d34.3433642!4d47.0737136!16s%2Fg%2F11rj_xk_q_?entry=ttu&g_ep=EgoyMDI0MTIwMi4wIKXMDSoASAFQAw%3D%3D" // لینک لوکیشن گوگل مپ
+        href="https://www.google.com/maps/place/Novo+Café/@34.3656513,47.1174416,12z/data=!4m6!3m5!1s0x3ffaed1567446db3:0xa488808a94044f4b!8m2!3d34.3433642!4d47.0737136!16s%2Fg%2F11rj_xk_q_?entry=ttu&g_ep=EgoyMDI0MTIwMi4wIKXMDSoASAFQAw%3D%3D"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed flex items-center top-1 left-1 bg-accent bg-opacity-40 backdrop-blur-md z-30 text-white py-1 px-2 rounded-md shadow-lg hover:scale-105 transition duration-200"
       >
         <CiLocationOn className="text-black mr-1" size={25} /> <span className="text-sm"> نشانی ما</span>
       </a>
-      <Footer></Footer>
-      </div>
+      <Footer />
+    </div>
   );
 }
