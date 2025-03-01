@@ -183,7 +183,7 @@ export default function Home() {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-4xl md:text-6xl font-bold mb-4 text-white"
+            className="text-4xl md:text-6xl text-center font-bold mb-4 text-white"
           >
             <span className="text-accent">نوو</span> کافه
           </motion.h1>
@@ -192,7 +192,7 @@ export default function Home() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="text-xl text-gray-300 mb-8"
+            className="text-xl text-center text-gray-300 mb-8"
           >
             تجربه‌ای متفاوت از نوشیدن قهوه در فضایی دلنشین
           </motion.p>
