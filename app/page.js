@@ -1,36 +1,19 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  FiChevronUp,
-  FiMapPin,
-  FiSearch,
-  FiX,
-  FiBookmark,
-} from "react-icons/fi";
+import { FiArrowRight, FiCoffee, FiMapPin, FiPhoneCall } from "react-icons/fi";
 
 // Components
-import Categories from "@/components/Categories";
-import Items from "@/components/Items";
 import Navbar from "@/components/Navbar";
-import Searchbar from "@/components/Searchbar";
 import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/Loading";
-import SavedList from "@/components/SavedList";
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [noResults, setNoResults] = useState(false);
-  const [showScrollToTop, setShowScrollToTop] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [categoriesWithResults, setCategoriesWithResults] = useState({});
   const [savedItems, setSavedItems] = useState([]);
   const [isSavedListOpen, setIsSavedListOpen] = useState(false);
-  const searchbarRef = useRef(null);
-
-  console.log("Main page - current searchQuery:", searchQuery);
 
   // Handle loading screen
   useEffect(() => {
@@ -52,236 +35,247 @@ export default function Home() {
 
   // Save items to localStorage when they change
   useEffect(() => {
-    if (savedItems.length > 0) {
-      localStorage.setItem("novoSavedItems", JSON.stringify(savedItems));
-    } else {
-      localStorage.removeItem("novoSavedItems");
-    }
+    localStorage.setItem("novoSavedItems", JSON.stringify(savedItems));
   }, [savedItems]);
 
-  // Scroll to top button visibility - with throttling to prevent too many updates
-  useEffect(() => {
-    const handleScroll = () => {
-      const shouldShow = window.scrollY > 300;
-      // Only update state if the value is actually changing
-      if (shouldShow !== showScrollToTop) {
-        setShowScrollToTop(shouldShow);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [showScrollToTop]); // Add showScrollToTop as dependency
-
-  // Handlers
-  const handleNoResults = useCallback((found) => {
-    setNoResults(!found);
-  }, []);
-
-  const handleSearch = useCallback((query) => {
-    console.log("handleSearch called with:", query);
-    // Garantizar que searchQuery siempre sea un string y nunca undefined
-    const cleanQuery = typeof query === "string" ? query : "";
-    setSearchQuery(cleanQuery);
-  }, []);
-
-  const handleCategoriesUpdate = useCallback((categoriesResults) => {
-    setCategoriesWithResults(categoriesResults);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  const resetSearch = useCallback(() => {
-    // Resetear explícitamente la búsqueda
-    setSearchQuery("");
-    setNoResults(false);
-
-    // Reiniciar el estado de las categorías
-    const allCategoriesEnabled = {};
-    const categories = [
-      "قهوه گرم و سرد",
-      "دمی بار",
-      "نوشیدنی های گرم",
-      "نوشیدنی های سرد",
-      "شیک",
-      "فصلی",
-      "تاپینگ",
-    ];
-    categories.forEach((cat) => {
-      allCategoriesEnabled[cat] = true;
-    });
-    setCategoriesWithResults(allCategoriesEnabled);
-
-    // Desplazar al inicio de los elementos
-    setTimeout(() => {
-      const itemsElement = document.getElementById("categories");
-      if (itemsElement) {
-        itemsElement.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 100);
-  }, []);
-
-  // Calculate total items in list
-  const totalSavedItems = savedItems.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
-
-  // Asegurar que cualquier cambio en searchQuery sea procesado correctamente
-  useEffect(() => {
-    console.log("searchQuery changed:", searchQuery);
-  }, [searchQuery]);
-
-  // Show loading screen
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  if (isLoading) return <LoadingScreen />;
 
   return (
-    <main className="min-h-screen bg-primary text-white pb-20">
-      {/* Navbar */}
+    <>
       <Navbar
         savedItems={savedItems}
         onSavedListToggle={() => setIsSavedListOpen(!isSavedListOpen)}
       />
 
-      {/* Saved List Button (Mobile - Fixed at Bottom) */}
-      <motion.button
-        initial={{ y: 100 }}
-        animate={{ y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="fixed z-40 bottom-6 right-6 bg-accent text-black p-3 rounded-full shadow-lg md:hidden"
-        onClick={() => setIsSavedListOpen(!isSavedListOpen)}
-      >
-        <FiBookmark className="text-xl" />
-        {savedItems.length > 0 && (
-          <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full border-2 border-accent">
-            {savedItems.reduce((total, item) => total + item.quantity, 0)}
-          </span>
-        )}
-      </motion.button>
+      <main>
+        {/* Hero Section */}
+        <section className="relative min-h-screen flex items-center justify-center px-4 text-center">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/hero-bg.jpg"
+              alt="نوو کافه"
+              fill
+              className="object-cover opacity-50"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/90"></div>
+          </div>
 
-      {/* Saved List Component */}
-      <SavedList
-        isOpen={isSavedListOpen}
-        setIsOpen={setIsSavedListOpen}
-        savedItems={savedItems}
-        setSavedItems={setSavedItems}
-      />
-
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="max-w-4xl mx-auto">
-          <motion.h1
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-4xl md:text-6xl text-center font-bold mb-4 text-white"
-          >
-            <span className="text-accent">نوو</span> کافه
-          </motion.h1>
-
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="text-xl text-center text-gray-300 mb-8"
-          >
-            تجربه‌ای متفاوت از نوشیدن قهوه در فضایی دلنشین
-          </motion.p>
-
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="flex flex-wrap justify-center gap-4"
-          >
-            <Link href="#categories">
-              <button className="btn-primary px-8 py-3">مشاهده منو</button>
-            </Link>
-            <Link
-              href="https://www.google.com/maps/place/Novo+Café/@34.3656513,47.1174416,12z/data=!4m6!3m5!1s0x3ffaed1567446db3:0xa488808a94044f4b!8m2!3d34.3433642!4d47.0737136!16s%2Fg%2F11rj_xk_q_?entry=ttu&g_ep=EgoyMDI0MTIwMi4wIKXMDSoASAFQAw%3D%3D"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center btn-secondary px-8 py-3"
+          <div className="container mx-auto relative z-10 px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="max-w-3xl mx-auto"
             >
-              <FiMapPin className="ml-2" />
-              <span>موقعیت ما</span>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-white tracking-tighter">
+                <span className="text-accent">نوو</span> کافه؛ تجربه‌ای نو در
+                دنیای قهوه
+              </h1>
 
-      {/* Search Section */}
-      <Searchbar onSearch={handleSearch} ref={searchbarRef} />
+              <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed tracking-wide max-w-xl mx-auto">
+                مکانی دنج و آرام برای لذت بردن از طعم‌های استثنایی و لحظات
+                ماندگار
+              </p>
 
-      {/* Reset search button */}
-      <AnimatePresence>
-        {searchQuery && (
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            onClick={resetSearch}
-            className="fixed z-20 top-24 right-4 bg-accent text-black py-2 px-4 rounded-lg shadow-md font-medium hover:bg-accent/80 transition-colors"
-          >
-            <FiX className="inline-block ml-1" />
-            پاک کردن جستجو
-          </motion.button>
-        )}
-      </AnimatePresence>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/menu"
+                  className="btn-primary tracking-wide font-medium inline-flex items-center justify-center min-w-[160px] gap-2"
+                >
+                  مشاهده منو
+                  <FiArrowRight />
+                </Link>
 
-      {/* No results message */}
-      <AnimatePresence>
-        {noResults && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="fixed top-20 left-1/2 transform -translate-x-1/2 z-30 bg-red-600 text-white py-3 px-6 rounded-lg shadow-lg"
-          >
-            محصولی یافت نشد!
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <Link
+                  href="#contact"
+                  className="btn-secondary tracking-wide font-medium inline-flex items-center justify-center min-w-[160px] gap-2"
+                >
+                  ارتباط با ما
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </section>
 
-      {/* Categories and Items */}
-      <Categories
-        searchQuery={searchQuery}
-        categoriesWithResults={categoriesWithResults}
-      />
-      <Items
-        key={searchQuery}
-        searchQuery={searchQuery}
-        handleNoResults={handleNoResults}
-        onCategoriesUpdate={handleCategoriesUpdate}
-        savedItems={savedItems}
-        setSavedItems={setSavedItems}
-      />
+        {/* Features Section */}
+        <section className="py-20 bg-gradient-to-b from-black to-dark">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+                چرا <span className="text-accent">نوو</span> کافه؟
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto tracking-wide">
+                تلاش ما ارائه بهترین تجربه برای مشتریان ماست
+              </p>
+            </div>
 
-      {/* Scroll to top button */}
-      <AnimatePresence>
-        {showScrollToTop && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            onClick={scrollToTop}
-            className="fixed z-50 bottom-6 left-6 md:right-6 md:left-auto bg-accent text-black p-3 rounded-full shadow-lg"
-          >
-            <FiChevronUp className="text-xl" />
-          </motion.button>
-        )}
-      </AnimatePresence>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <motion.div
+                className="bg-white/5 backdrop-blur-sm p-6 rounded-2xl"
+                whileHover={{
+                  y: -10,
+                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+                }}
+                transition={{ duration: 0.3 }}
+              >
+                <FiCoffee className="text-accent text-4xl mb-4" />
+                <h3 className="text-xl font-bold mb-2 tracking-tight">
+                  قهوه تازه روز
+                </h3>
+                <p className="text-gray-400 tracking-wide">
+                  ما از دانه‌های قهوه تازه و با کیفیت استفاده می‌کنیم تا طعمی
+                  استثنایی را به شما هدیه دهیم.
+                </p>
+              </motion.div>
+
+              <motion.div
+                className="bg-white/5 backdrop-blur-sm p-6 rounded-2xl"
+                whileHover={{
+                  y: -10,
+                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+                }}
+                transition={{ duration: 0.3 }}
+              >
+                <FiMapPin className="text-accent text-4xl mb-4" />
+                <h3 className="text-xl font-bold mb-2 tracking-tight">
+                  فضای دنج و آرام
+                </h3>
+                <p className="text-gray-400 tracking-wide">
+                  محیطی آرام و دلنشین برای گفتگو، مطالعه و لذت بردن از لحظات خاص
+                  در کنار عزیزانتان.
+                </p>
+              </motion.div>
+
+              <motion.div
+                className="bg-white/5 backdrop-blur-sm p-6 rounded-2xl"
+                whileHover={{
+                  y: -10,
+                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+                }}
+                transition={{ duration: 0.3 }}
+              >
+                <FiPhoneCall className="text-accent text-4xl mb-4" />
+                <h3 className="text-xl font-bold mb-2 tracking-tight">
+                  سفارش آنلاین
+                </h3>
+                <p className="text-gray-400 tracking-wide">
+                  به راحتی سفارش خود را ثبت کنید و در اسرع وقت آن را در منزل یا
+                  محل کار خود تحویل بگیرید.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* About Preview Section */}
+        <section className="py-20" id="about">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col lg:flex-row items-center gap-12">
+              <div className="lg:w-1/2">
+                <motion.div
+                  className="relative rounded-2xl overflow-hidden"
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Image
+                    src="/pexels-chevanon-302899.jpg"
+                    alt="درباره نوو کافه"
+                    width={600}
+                    height={400}
+                    className="w-full h-auto rounded-2xl"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                </motion.div>
+              </div>
+
+              <div className="lg:w-1/2">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 tracking-tight">
+                  درباره <span className="text-accent">نوو</span> کافه
+                </h2>
+
+                <p className="text-gray-300 mb-6 tracking-wide leading-relaxed">
+                  نوو کافه از سال ۱۳۹۸ فعالیت خود را آغاز کرده و تاکنون افتخار
+                  میزبانی از هزاران مشتری را داشته است. ما با تیمی مجرب و
+                  حرفه‌ای، همواره در تلاشیم تا بهترین تجربه را برای مشتریان خود
+                  فراهم کنیم.
+                </p>
+
+                <Link
+                  href="/about"
+                  className="btn-secondary tracking-wide font-medium inline-flex items-center justify-center min-w-[160px] gap-2"
+                >
+                  بیشتر بدانید
+                  <FiArrowRight />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Preview Section */}
+        <section
+          className="py-20 bg-gradient-to-t from-black to-dark"
+          id="contact"
+        >
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+                با ما در <span className="text-accent">تماس</span> باشید
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto tracking-wide">
+                برای رزرو میز، سفارش آنلاین یا هرگونه پرسشی با ما در ارتباط
+                باشید
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div className="bg-white/5 backdrop-blur-sm p-6 rounded-2xl text-center">
+                  <FiMapPin className="text-accent text-3xl mb-4 mx-auto" />
+                  <h3 className="text-xl font-bold mb-2 tracking-tight">
+                    آدرس
+                  </h3>
+                  <p className="text-gray-400 tracking-wide">
+                    کرمانشاه، بلوار شهید بهشتی، روبروی بانک ملی
+                  </p>
+                </div>
+
+                <div className="bg-white/5 backdrop-blur-sm p-6 rounded-2xl text-center">
+                  <FiPhoneCall className="text-accent text-3xl mb-4 mx-auto" />
+                  <h3 className="text-xl font-bold mb-2 tracking-tight">
+                    تلفن
+                  </h3>
+                  <p className="text-gray-400 tracking-wide">۰۸۳-۳۸۲۲۲۲۲۲</p>
+                </div>
+
+                <div className="bg-white/5 backdrop-blur-sm p-6 rounded-2xl text-center">
+                  <FiCoffee className="text-accent text-3xl mb-4 mx-auto" />
+                  <h3 className="text-xl font-bold mb-2 tracking-tight">
+                    ساعات کاری
+                  </h3>
+                  <p className="text-gray-400 tracking-wide">
+                    همه روزه از ساعت ۹ صبح تا ۱۱ شب
+                  </p>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <Link
+                  href="/contact"
+                  className="btn-primary tracking-wide font-medium inline-flex items-center justify-center min-w-[160px] gap-2"
+                >
+                  تماس با ما
+                  <FiArrowRight />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
 
       <Footer />
-    </main>
+    </>
   );
 }

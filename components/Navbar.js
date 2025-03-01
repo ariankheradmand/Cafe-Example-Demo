@@ -30,9 +30,9 @@ export default function Navbar({ savedItems = [], onSavedListToggle }) {
 
   const navLinks = [
     { name: "خانه", href: "/" },
-    { name: "منو", href: "#menu" },
-    { name: "درباره ما", href: "#about" },
-    { name: "تماس با ما", href: "#contact" },
+    { name: "منو", href: "/menu" },
+    { name: "درباره ما", href: "/about" },
+    { name: "تماس با ما", href: "/contact" },
   ];
 
   return (

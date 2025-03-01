@@ -1,5 +1,10 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import { Inter } from "next/font/google";
+
+// Components
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const vazirmatn = localFont({
   src: [
@@ -10,6 +15,12 @@ const vazirmatn = localFont({
     },
   ],
   variable: "--font-vazirmatn",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
 export const metadata = {
@@ -23,7 +34,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="fa" dir="rtl">
-      <body className={`${vazirmatn.variable} font-sans antialiased`}>
+      <body
+        className={`${vazirmatn.variable} ${inter.variable} font-primary antialiased`}
+      >
         <div className="relative min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
           {children}
         </div>
