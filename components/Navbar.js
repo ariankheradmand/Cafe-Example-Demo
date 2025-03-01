@@ -103,7 +103,7 @@ export default function Navbar({ savedItems = [], onSavedListToggle }) {
           </button>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-white hover:text-accent transition-colors"
