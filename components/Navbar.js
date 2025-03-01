@@ -3,9 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FiMenu, FiX, FiSearch, FiShoppingBag } from "react-icons/fi";
+import {
+  FiMenu,
+  FiX,
+  FiSearch,
+  FiShoppingBag,
+  FiBookmark,
+} from "react-icons/fi";
 
-export default function Navbar() {
+export default function Navbar({ savedItems = [], onSavedListToggle }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -82,8 +88,18 @@ export default function Navbar() {
           <button className="text-white hover:text-accent transition-colors">
             <FiSearch className="text-xl" />
           </button>
-          <button className="text-white hover:text-accent transition-colors">
-            <FiShoppingBag className="text-xl" />
+
+          {/* Saved List Button */}
+          <button
+            className="text-white hover:text-accent transition-colors relative"
+            onClick={onSavedListToggle}
+          >
+            <FiBookmark className="text-xl" />
+            {savedItems.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-accent text-primary text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                {savedItems.reduce((total, item) => total + item.quantity, 0)}
+              </span>
+            )}
           </button>
 
           {/* Mobile Menu Button */}

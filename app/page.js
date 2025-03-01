@@ -3,7 +3,13 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { FiChevronUp, FiMapPin, FiSearch, FiX } from "react-icons/fi";
+import {
+  FiChevronUp,
+  FiMapPin,
+  FiSearch,
+  FiX,
+  FiBookmark,
+} from "react-icons/fi";
 
 // Components
 import Categories from "@/components/Categories";
@@ -12,6 +18,7 @@ import Navbar from "@/components/Navbar";
 import Searchbar from "@/components/Searchbar";
 import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/Loading";
+import SavedList from "@/components/SavedList";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,6 +26,8 @@ export default function Home() {
   const [showScrollToTop, setShowScrollToTop] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [categoriesWithResults, setCategoriesWithResults] = useState({});
+  const [savedItems, setSavedItems] = useState([]);
+  const [isSavedListOpen, setIsSavedListOpen] = useState(false);
   const searchbarRef = useRef(null);
 
   console.log("Main page - current searchQuery:", searchQuery);
@@ -28,6 +37,27 @@ export default function Home() {
     const timer = setTimeout(() => setIsLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  // Load saved items from localStorage
+  useEffect(() => {
+    const savedData = localStorage.getItem("novoSavedItems");
+    if (savedData) {
+      try {
+        setSavedItems(JSON.parse(savedData));
+      } catch (error) {
+        console.error("Error loading saved items:", error);
+      }
+    }
+  }, []);
+
+  // Save items to localStorage when they change
+  useEffect(() => {
+    if (savedItems.length > 0) {
+      localStorage.setItem("novoSavedItems", JSON.stringify(savedItems));
+    } else {
+      localStorage.removeItem("novoSavedItems");
+    }
+  }, [savedItems]);
 
   // Scroll to top button visibility - with throttling to prevent too many updates
   useEffect(() => {
@@ -98,6 +128,12 @@ export default function Home() {
     }, 100);
   }, []);
 
+  // Calculate total items in list
+  const totalSavedItems = savedItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
   // Asegurar que cualquier cambio en searchQuery sea procesado correctamente
   useEffect(() => {
     console.log("searchQuery changed:", searchQuery);
@@ -109,23 +145,39 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-primary to-dark relative overflow-hidden pb-10">
-      {/* Animated background orbs */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -right-20 w-64 h-64 bg-accent/20 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/3 -left-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
-      </div>
+    <main className="min-h-screen bg-primary text-white pb-20">
+      {/* Navbar */}
+      <Navbar
+        savedItems={savedItems}
+        onSavedListToggle={() => setIsSavedListOpen(!isSavedListOpen)}
+      />
 
-      <Navbar />
+      {/* Saved List Button (Mobile - Fixed at Bottom) */}
+      <motion.button
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="fixed z-40 bottom-6 right-6 bg-accent text-black p-3 rounded-full shadow-lg md:hidden"
+        onClick={() => setIsSavedListOpen(!isSavedListOpen)}
+      >
+        <FiBookmark className="text-xl" />
+        {savedItems.length > 0 && (
+          <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full border-2 border-accent">
+            {savedItems.reduce((total, item) => total + item.quantity, 0)}
+          </span>
+        )}
+      </motion.button>
+
+      {/* Saved List Component */}
+      <SavedList
+        isOpen={isSavedListOpen}
+        setIsOpen={setIsSavedListOpen}
+        savedItems={savedItems}
+        setSavedItems={setSavedItems}
+      />
 
       {/* Hero Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="relative min-h-[60vh] flex items-center justify-center text-center px-4"
-      >
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="max-w-4xl mx-auto">
           <motion.h1
             initial={{ y: -20, opacity: 0 }}
@@ -165,7 +217,7 @@ export default function Home() {
             </Link>
           </motion.div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Search Section */}
       <Searchbar onSearch={handleSearch} ref={searchbarRef} />
@@ -210,6 +262,8 @@ export default function Home() {
         searchQuery={searchQuery}
         handleNoResults={handleNoResults}
         onCategoriesUpdate={handleCategoriesUpdate}
+        savedItems={savedItems}
+        setSavedItems={setSavedItems}
       />
 
       {/* Scroll to top button */}
@@ -220,7 +274,7 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
             onClick={scrollToTop}
-            className="fixed z-50 bottom-6 right-6 bg-accent text-black p-3 rounded-full shadow-lg"
+            className="fixed z-50 bottom-6 left-6 md:right-6 md:left-auto bg-accent text-black p-3 rounded-full shadow-lg"
           >
             <FiChevronUp className="text-xl" />
           </motion.button>

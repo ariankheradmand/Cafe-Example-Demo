@@ -3,7 +3,14 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { productData } from "@/libs/data";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiX, FiInfo, FiFilter } from "react-icons/fi";
+import {
+  FiX,
+  FiInfo,
+  FiFilter,
+  FiBookmark,
+  FiCheck,
+  FiPlus,
+} from "react-icons/fi";
 import CategoryIcon from "./CategoryIcon";
 
 // Categories for grouping products
@@ -21,6 +28,8 @@ export default function Items({
   searchQuery,
   handleNoResults,
   onCategoriesUpdate,
+  savedItems,
+  setSavedItems,
 }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const [filteredItems, setFilteredItems] = useState(productData);
@@ -28,6 +37,7 @@ export default function Items({
   const [categoriesWithResults, setCategoriesWithResults] = useState({});
   const [isSearchActive, setIsSearchActive] = useState(false);
   const prevSearchQueryRef = useRef("");
+  const [addedToList, setAddedToList] = useState(null);
 
   console.log(
     "Items component received searchQuery:",
@@ -201,6 +211,36 @@ export default function Items({
     return !item.imagePath;
   };
 
+  // Add item to saved list
+  const addToList = (e, item) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    // Check if item already exists in list
+    const existingItemIndex = savedItems.findIndex((i) => i.id === item.id);
+
+    if (existingItemIndex !== -1) {
+      // If exists, increase quantity
+      const newItems = [...savedItems];
+      newItems[existingItemIndex].quantity += 1;
+      setSavedItems(newItems);
+    } else {
+      // If new, add with quantity 1
+      setSavedItems([...savedItems, { ...item, quantity: 1 }]);
+    }
+
+    // Show feedback
+    setAddedToList(item.id);
+    setTimeout(() => {
+      setAddedToList(null);
+    }, 1500);
+  };
+
+  // Check if item is in saved list
+  const isInList = (itemId) => {
+    return savedItems.some((item) => item.id === itemId);
+  };
+
   if (noItemsFound) {
     return (
       <motion.div
@@ -296,6 +336,20 @@ export default function Items({
                 >
                   <FiX className="text-xl" />
                 </button>
+
+                {/* Add to List button in modal */}
+                <button
+                  className="absolute top-3 left-3 bg-black/50 hover:bg-accent text-white p-2 rounded-full transition-colors"
+                  onClick={(e) => addToList(e, selectedItem)}
+                >
+                  {addedToList === selectedItem.id ? (
+                    <FiCheck className="text-white" />
+                  ) : isInList(selectedItem.id) ? (
+                    <FiBookmark className="text-white" />
+                  ) : (
+                    <FiBookmark className="text-white" />
+                  )}
+                </button>
               </div>
 
               <div className="p-6">
@@ -336,6 +390,31 @@ export default function Items({
                     </div>
                   </div>
                 )}
+
+                {/* Add to List button at bottom of modal */}
+                <motion.button
+                  className="w-full mt-6 py-3 px-4 bg-accent text-black rounded-lg flex items-center justify-center font-medium"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={(e) => addToList(e, selectedItem)}
+                >
+                  {addedToList === selectedItem.id ? (
+                    <>
+                      <FiCheck className="ml-2" />
+                      به لیست اضافه شد
+                    </>
+                  ) : isInList(selectedItem.id) ? (
+                    <>
+                      <FiPlus className="ml-2" />
+                      افزودن مجدد به لیست
+                    </>
+                  ) : (
+                    <>
+                      <FiBookmark className="ml-2" />
+                      افزودن به لیست یادآوری
+                    </>
+                  )}
+                </motion.button>
               </div>
             </motion.div>
           </motion.div>
@@ -408,6 +487,20 @@ export default function Items({
                     onClick={() => setSelectedItem(item)}
                   >
                     <div className="glassmorphism rounded-xl h-full flex flex-col relative overflow-hidden group">
+                      {/* Add to List Button */}
+                      <button
+                        className="absolute top-2 right-2 z-10 bg-white/10 hover:bg-accent transition-colors p-2 rounded-full"
+                        onClick={(e) => addToList(e, item)}
+                      >
+                        {addedToList === item.id ? (
+                          <FiCheck className="text-white" />
+                        ) : isInList(item.id) ? (
+                          <FiBookmark className="text-accent" />
+                        ) : (
+                          <FiBookmark className="text-white" />
+                        )}
+                      </button>
+
                       <div className="p-4 flex-grow flex flex-col justify-between">
                         <h3 className="font-bold text-center mb-2 text-white group-hover:text-accent transition-colors">
                           {item.name}
