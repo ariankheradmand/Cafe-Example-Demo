@@ -215,11 +215,9 @@ export default function Home() {
         </section>
 
         {/* Contact Preview Section */}
-        <section
-          className="py-20 bg-gradient-to-t from-black to-dark"
-          id="contact"
-        >
-          <div className="container mx-auto px-4">
+        <section className="py-20 relative overflow-hidden w-full" id="contact">
+          <div className="absolute inset-0 bg-gradient-to-t from-black to-secondary opacity-30 z-0"></div>
+          <div className="container mx-auto px-4 relative z-10">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
                 با ما در <span className="text-accent">تماس</span> باشید
