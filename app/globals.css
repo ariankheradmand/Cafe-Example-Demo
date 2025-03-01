@@ -5,12 +5,12 @@
 @tailwind utilities;
 
 :root {
-  --primary: #0f172a;
-  --secondary: #1e293b;
+  --primary: #1e3a8a;
+  --secondary: #3b82f6;
   --accent: #fec800;
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
-  --card-bg: rgba(30, 41, 59, 0.7);
+  --card-bg: rgba(59, 130, 246, 0.3);
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
