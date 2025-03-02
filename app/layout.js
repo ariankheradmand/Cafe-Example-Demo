@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 // Components
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { AppProviders } from "@/components/AppProviders";
+import MusicPlayer from "@/components/MusicPlayer";
 
 const vazirmatn = localFont({
   src: [
@@ -37,9 +39,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${vazirmatn.variable} ${inter.variable} font-primary antialiased`}
       >
-        <div className="relative min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
-          {children}
-        </div>
+        <AppProviders>
+          <div className="relative min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+            {children}
+            <MusicPlayer />
+          </div>
+        </AppProviders>
       </body>
     </html>
   );

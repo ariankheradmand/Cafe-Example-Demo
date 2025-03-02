@@ -11,6 +11,7 @@ import {
   FaPhone,
   FaEnvelope,
 } from "react-icons/fa";
+import AnimatedLogo from "./AnimatedLogo";
 
 function Footer() {
   const footerLinks = [
@@ -46,13 +47,7 @@ function Footer() {
           {/* Logo and About */}
           <div className="col-span-1">
             <div className="flex items-center mb-4">
-              <Image
-                src="/Logo.svg"
-                alt="نوو کافه"
-                width={100}
-                height={40}
-                className="h-12 w-auto"
-              />
+              <AnimatedLogo isFooter={true} />
             </div>
             <p className="text-gray-400 text-sm mb-4">
               نوو کافه، محلی برای لذت بردن از قهوه‌های اصیل و باکیفیت در فضایی
